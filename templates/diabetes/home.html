@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+        input {
+            width: 90%;
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Analysis</title>
+</head>
+<body>
+    
+    <h1>Diabetes Dataset Showcase</h1>
+    <ul>
+        <li><a href="/eda/">EDA</a></li>
+        <li><a href="/accuracy/">Accuracy Scores</a></li>
+        <li><a href="/column_details/">Column Details</a></li>
+        <li><a href="/analysis/">Analysis and Insights</a></li>
+        <li><a href="/predict/">Prediction</a></li>
+    </ul>
+
+    <div class="container">
+        <h2>Diabetes Prediction</h2>
+        <form method="POST" action="/diabetes/" id="predictionForm">
+            {% csrf_token %}
+            <input type="number" step="any" placeholder="Pregnancies" name="Pregnancies">
+            <input type="number" step="any" placeholder="Glucose" name="Glucose">
+            <input type="number" step="any" placeholder="Blood Pressure" name="BloodPressure">
+            <input type="number" step="any" placeholder="Skin Thickness" name="SkinThickness">
+            <input type="number" step="any" placeholder="Insulin" name="Insulin">
+            <input type="number" step="any" placeholder="BMI" name="BMI">
+            <input type="number" step="any" placeholder="Diabetes Pedigree Function" name="DiabetesPedigreeFunction">
+            <input type="number" step="any" placeholder="Age" name="Age">
+            <button type="submit">Predict</button>
+        </form>
+        <div id="result">{{ result }}</div>
+    </div>
+</body>
+</html>

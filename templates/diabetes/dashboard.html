@@ -1,0 +1,165 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Prediction Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 20px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #0056b3;
+        }
+        nav a {
+            text-decoration: none;
+            color: white;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        section {
+            padding: 20px;
+            background-color: white;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Diabetes Prediction Dashboard</h1>
+    </header>
+
+    <!-- Navbar -->
+    <nav>
+        <a href="#prediction">Prediction</a>
+        <a href="#dataset-info">Dataset Information</a>
+        <a href="#dataset-analysis">Dataset Analysis</a>
+        <a href="#dataset-plot">Data Plotting</a>
+    </nav>
+
+    <!-- Prediction Section -->
+    <section id="prediction">
+        <h2>Predict Diabetes</h2>
+        <form method="POST" action="/predict/">
+            {% csrf_token %}
+            {% for i in "12345678"|make_list %}
+            <label for="feature{{ i }}">Feature {{ i }}:</label>
+            <input type="text" name="feature{{ i }}" required><br><br>
+            {% endfor %}
+            <button type="submit" class="btn">Predict</button>
+        </form>
+    </section>
+
+    <!-- Dataset Information Section -->
+    <section id="dataset-info">
+        <h2>Dataset Information</h2>
+        <p><strong>Shape:</strong> {{ dataset_info.shape }}</p>
+        <p><strong>Columns:</strong> {{ dataset_info.columns }}</p>
+        <p><strong>Missing Values:</strong> {{ dataset_info.missing_values }}</p>
+        <p><strong>Outcome Counts:</strong> {{ dataset_info.outcome_counts }}</p>
+    </section>
+
+    <!-- Dataset Analysis Section -->
+    <section id="dataset-analysis">
+        <h2>Dataset Analysis</h2>
+        <h3>Outcome Distribution</h3>
+        <table>
+            <tr>
+                <th>Outcome</th>
+                <th>Count</th>
+            </tr>
+            {% for outcome, count in dataset_info.outcome_counts.items %}
+            <tr>
+                <td>{{ outcome }}</td>
+                <td>{{ count }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h3>Model Performance</h3>
+        <table>
+            <tr>
+                <th>Model</th>
+                <th>Accuracy (%)</th>
+                <th>Precision (%)</th>
+                <th>Recall (%)</th>
+            </tr>
+            {% for model, metrics in model_results.items %}
+            <tr>
+                <td>{{ model }}</td>
+                <td>{{ metrics.accuracy }}</td>
+                <td>{{ metrics.precision }}</td>
+                <td>{{ metrics.recall }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+
+    <section id="dataset-plot">
+        <h3>Accuracy Score Comparison</h3>
+        <div>
+
+            <div>
+                {{ scaler }}
+            </div>
+            <h6>{{ plot_path }}</h6>
+            <img src="{% static 'plots/model_accuracy.jpg'  }} %}" alt="Model Accuracy Graph" style="max-width: 100%; height: auto;"/>
+        </div>
+    </section>
+
+</body>
+</html>
