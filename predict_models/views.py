@@ -1,34 +1,3 @@
-# Load the saved model
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# model = joblib.load(os.path.join(BASE_DIR, 'train_models', 'diabetes', 'diabetes_model.pkl'))
-
-# def diabetes_home(request):
-
-#     if request.method == 'POST':
-#             # Extract user inputs
-#         data = request.POST
-#         features = np.array([
-#             float(data['Pregnancies']),
-#             float(data['Glucose']),
-#             float(data['BloodPressure']),
-#             float(data['SkinThickness']),
-#             float(data['Insulin']),
-#             float(data['BMI']),
-#             float(data['DiabetesPedigreeFunction']),
-#             float(data['Age'])
-#         ]).reshape(1, -1)
-            
-#             # Make prediction
-#         prediction = model.predict(features)[0]
-#         result = "Diabetic" if prediction == 1 else "Non-Diabetic"
-#         print(result)
-#         return render(request, 'diabetes/home.html', {'result': result})
-#     else:
-#         return render(request, 'diabetes/home.html')
-    
-
-
 import joblib
 import os
 from django.shortcuts import render
@@ -76,7 +45,10 @@ def model_dashboard(request):
 
     # save_model_accuracy_graph(data["model_results"], static_dir, 'diabetes_accuracy_plot.png')
 
+    inputs = data['dataset_info']['columns']
+
     return render(request, 'diabetes/dashboard.html', {
+        "inputs": inputs[:-1],
         "dataset_info": data['dataset_info'],
         "model_results": data['model_results'],
         "plot_path": 'model_accuracy.jpg'
@@ -84,16 +56,24 @@ def model_dashboard(request):
 
 
 def predict_diabetes(request):
+
     if request.method == 'POST':
         data = load_model_data()
-        user_input = [float(request.POST[f'feature{i}']) for i in range(1, 9)]
-        
+        inputs = data['dataset_info']['columns']
+        user_input = [float(request.POST[i]) for i in inputs[:-1]]
         # Scale input
         scaler = data['scaler']
         user_input_scaled = scaler.transform([user_input])
-        
         # Predict using the best model
         best_model = data['best_model']
         prediction = best_model.predict(user_input_scaled)[0]
-        
+        # output = {"prediction": "Diabetic" if prediction == 1 else "Non-Diabetic"}
         return JsonResponse({"prediction": "Diabetic" if prediction == 1 else "Non-Diabetic"})
+
+        # return render(request, 'diabetes/dashboard.html', {
+        #     "output": output['prediction'],
+        #     "inputs": inputs[:-1],
+        #     "dataset_info": data['dataset_info'],
+        #     "model_results": data['model_results'],
+        #     "plot_path": 'model_accuracy.jpg'
+        # }) 

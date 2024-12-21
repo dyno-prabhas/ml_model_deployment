@@ -1,165 +1,296 @@
-{% load static %}
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diabetes Prediction Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* General Styling */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #f8f8f8;
+            color: #333;
         }
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 15px 20px;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 24px;
-        }
+
+        /* Navbar */
         nav {
+            background-color: #0073e6;
+            color: white;
+            padding: 1rem 2rem;
             display: flex;
-            justify-content: space-between;
+            justify-content: space-evenly;
             align-items: center;
-            padding: 10px 20px;
-            background-color: #0056b3;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+
         nav a {
+            color: white;
             text-decoration: none;
-            color: white;
-            margin: 0 10px;
-            font-weight: bold;
+            margin: 0 1rem;
+            font-weight: 500;
+            transition: color 0.3s;
         }
+
         nav a:hover {
-            text-decoration: underline;
+            color: #ffcc00;
         }
-        section {
-            padding: 20px;
-            background-color: white;
-            margin: 20px;
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .btn {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+
+        h1, h2 {
+            color: #0073e6;
+            text-transform: uppercase;
+            text-align: center;
         }
-        .btn:hover {
-            background-color: #0056b3;
+
+        h2 {
+            margin-top: 2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
         }
+
+        form {
+            margin-top: 1.5rem;
+        }
+
+        .form-group {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        @media (max-width: 992px) {
+            .form-group {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-group {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-group input {
+            width: 90%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: #ffcc00;
+            margin: 0.5rem auto;
+        }
+
+        h3 {
+            margin-top: 1.5rem;
+            color: #004d99;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            margin: 1.5rem 0;
         }
-        table, th, td {
+
+        th, td {
+            padding: 0.8rem 1rem;
+            text-align: left;
             border: 1px solid #ddd;
         }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
+
         th {
-            background-color: #f4f4f4;
+            background-color: #0073e6;
+            color: white;
+        }
+
+        td:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 1rem auto;
+            border-radius: 8px;
+        }
+
+        .photos {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .photos img {
+            width: 48%;
+            border: 2px solid #ddd;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .photos img:hover {
+            transform: scale(1.05);
+            border-color: #0073e6;
+        }
+
+        /* Buttons */
+        .button {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            margin: 1rem 0;
+            background-color: #0073e6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .button:hover {
+            background-color: #005bb5;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #0073e6;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            table th, table td {
+                font-size: 0.9rem;
+            }
+
+            .photos img {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-
-    <!-- Header -->
-    <header>
-        <h1>Diabetes Prediction Dashboard</h1>
-    </header>
-
-    <!-- Navbar -->
     <nav>
-        <a href="#prediction">Prediction</a>
-        <a href="#dataset-info">Dataset Information</a>
-        <a href="#dataset-analysis">Dataset Analysis</a>
-        <a href="#dataset-plot">Data Plotting</a>
+        <div>
+            <a href="#predict">Prediction</a>
+            <a href="#dataset-info">Dataset Information</a>
+            <a href="#dataset-analysis">Dataset Analysis</a>
+        </div>
     </nav>
 
-    <!-- Prediction Section -->
-    <section id="prediction">
-        <h2>Predict Diabetes</h2>
-        <form method="POST" action="/predict/">
-            {% csrf_token %}
-            {% for i in "12345678"|make_list %}
-            <label for="feature{{ i }}">Feature {{ i }}:</label>
-            <input type="text" name="feature{{ i }}" required><br><br>
-            {% endfor %}
-            <button type="submit" class="btn">Predict</button>
-        </form>
-    </section>
+    <div class="container">
+        <h1>Diabetes Prediction Dashboard</h1>
+        <p>Welcome to the diabetes prediction dashboard. Explore insights about the dataset, model performance, and predict outcomes dynamically.</p>
 
-    <!-- Dataset Information Section -->
-    <section id="dataset-info">
-        <h2>Dataset Information</h2>
-        <p><strong>Shape:</strong> {{ dataset_info.shape }}</p>
-        <p><strong>Columns:</strong> {{ dataset_info.columns }}</p>
-        <p><strong>Missing Values:</strong> {{ dataset_info.missing_values }}</p>
-        <p><strong>Outcome Counts:</strong> {{ dataset_info.outcome_counts }}</p>
-    </section>
+        <!-- Dataset Information Section -->
+        <section id="dataset-info">
+            <h2>Dataset Information</h2>
+            <p><strong>Shape:</strong> {{ dataset_info.shape }}</p>
+            <p><strong>Columns:</strong> {{ dataset_info.columns|join:", " }}</p>
+            <p><strong>Missing Values:</strong> {{ dataset_info.missing_values }}</p>
+            <p><strong>Outcome Counts:</strong></p>
+            <ul>
+                {% for outcome, count in dataset_info.outcome_counts.items %}
+                <li>{{ outcome }}: {{ count }}</li>
+                {% endfor %}
+            </ul>
+        </section>
 
-    <!-- Dataset Analysis Section -->
-    <section id="dataset-analysis">
-        <h2>Dataset Analysis</h2>
-        <h3>Outcome Distribution</h3>
-        <table>
-            <tr>
-                <th>Outcome</th>
-                <th>Count</th>
-            </tr>
-            {% for outcome, count in dataset_info.outcome_counts.items %}
-            <tr>
-                <td>{{ outcome }}</td>
-                <td>{{ count }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+        <!-- Dataset Analysis Section -->
+        <section id="dataset-analysis">
+            <h2>Dataset Analysis</h2>
+            <h3>Model Performance</h3>
+            <table>
+                <tr>
+                    <th>Model</th>
+                    <th>Accuracy (%)</th>
+                    <th>Precision (%)</th>
+                    <th>Recall (%)</th>
+                </tr>
+                {% for model, metrics in model_results.items %}
+                <tr>
+                    <td>{{ model }}</td>
+                    <td>{{ metrics.accuracy }}</td>
+                    <td>{{ metrics.precision }}</td>
+                    <td>{{ metrics.recall }}</td>
+                </tr>
+                {% endfor %}
+            </table>
 
-        <h3>Model Performance</h3>
-        <table>
-            <tr>
-                <th>Model</th>
-                <th>Accuracy (%)</th>
-                <th>Precision (%)</th>
-                <th>Recall (%)</th>
-            </tr>
-            {% for model, metrics in model_results.items %}
-            <tr>
-                <td>{{ model }}</td>
-                <td>{{ metrics.accuracy }}</td>
-                <td>{{ metrics.precision }}</td>
-                <td>{{ metrics.recall }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </section>
-
-    <section id="dataset-plot">
-        <h3>Accuracy Score Comparison</h3>
-        <div>
-
+            <h3>Score Comparison</h3>
             <div>
-                {{ scaler }}
+                <img src="{{ plot_path }}" alt="Model Accuracy Graph"/>
             </div>
-            <h6>{{ plot_path }}</h6>
-            <img src="{% static 'plots/model_accuracy.jpg'  }} %}" alt="Model Accuracy Graph" style="max-width: 100%; height: auto;"/>
-        </div>
-    </section>
 
+            <div class="photos">
+                <img src="/static/images/photo1.jpg" alt="Analysis Photo 1">
+                <img src="/static/images/photo2.jpg" alt="Analysis Photo 2">
+            </div>
+        </section>
+    </div>
+
+    <div class="container">
+        <section id="predict">
+            <h2>Prediction</h2>
+            <form action="/predict/" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {% for i in inputs %}
+                    <div>
+                        <label for="{{i}}"> {{i}}:</label>
+                        <input type="text" name="{{i}}" id="{{i}}" required>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="button">Predict</button>
+            </form>
+            {% if output %}
+            <h1>{{output}}</h1>
+            {% endif %}
+        </section>
+    </div>
+
+    <footer>
+        &copy; 2024 Diabetes Prediction Dashboard. All rights reserved.
+    </footer>
 </body>
 </html>
