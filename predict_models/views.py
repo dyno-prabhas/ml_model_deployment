@@ -51,15 +51,14 @@ def model_dashboard(request):
         "inputs": inputs[:-1],
         "dataset_info": data['dataset_info'],
         "model_results": data['model_results'],
-        "plot_path": 'model_accuracy.jpg'
     })
 
 
 def predict_diabetes(request):
 
+    data = load_model_data()
+    inputs = data['dataset_info']['columns']
     if request.method == 'POST':
-        data = load_model_data()
-        inputs = data['dataset_info']['columns']
         user_input = [float(request.POST[i]) for i in inputs[:-1]]
         # Scale input
         scaler = data['scaler']
@@ -67,9 +66,16 @@ def predict_diabetes(request):
         # Predict using the best model
         best_model = data['best_model']
         prediction = best_model.predict(user_input_scaled)[0]
-        # output = {"prediction": "Diabetic" if prediction == 1 else "Non-Diabetic"}
-        return JsonResponse({"prediction": "Diabetic" if prediction == 1 else "Non-Diabetic"})
-
+        output = {"prediction": "Diabetic" if prediction == 1 else "Non-Diabetic"}
+        return render(request, 'diabetes/diabetes_prediction.html', {
+            "output": output['prediction'],
+            "inputs": inputs[:-1],
+        }) 
+        #return JsonResponse({"prediction": "Diabetic" if prediction == 1 else "Non-Diabetic"})
+    else:
+        return render(request, 'diabetes/diabetes_prediction.html', {
+            "inputs": inputs[:-1],
+        })
         # return render(request, 'diabetes/dashboard.html', {
         #     "output": output['prediction'],
         #     "inputs": inputs[:-1],

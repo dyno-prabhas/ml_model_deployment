@@ -149,26 +149,17 @@
             justify-content: center;
             gap: 1rem;
             margin-top: 1rem;
-            flex-wrap: wrap; /* Ensures images wrap on smaller screens */
         }
 
         .photos img {
             width: 48%;
             border: 2px solid #ddd;
             transition: transform 0.3s, border-color 0.3s;
-            max-width: 100%; /* Prevents overflow */
-            height: auto;
         }
 
         .photos img:hover {
             transform: scale(1.05);
             border-color: #0073e6;
-        }
-
-        @media (max-width: 768px) {
-            .photos img {
-                width: 100%; /* Full width for smaller screens */
-            }
         }
 
         /* Buttons */
@@ -220,57 +211,32 @@
 <body>
     <nav>
         <div>
-            <a href="/predict/">Prediction</a>
-            <a href="#dataset-info">Dataset Information</a>
-            <a href="#dataset-analysis">Dataset Analysis</a>
+            <a href="#predict">Prediction</a>
+            <a href="/dashboard/">Dataset Information</a>
+            <a href="/dashboard/#dataset-analysis">Dataset Analysis</a>
         </div>
     </nav>
+        
 
     <div class="container">
         <h1>Diabetes Prediction Dashboard</h1>
-        <p>Welcome to the diabetes prediction dashboard. Explore insights about the dataset, model performance, and predict outcomes dynamically.</p>
-
-        <!-- Dataset Information Section -->
-        <section id="dataset-info">
-            <h2>Dataset Information</h2>
-            <p><strong>Shape:</strong> {{ dataset_info.shape }}</p>
-            <p><strong>Columns:</strong> {{ dataset_info.columns|join:", " }}</p>
-            <p><strong>Missing Values:</strong> {{ dataset_info.missing_values }}</p>
-            <p><strong>Outcome Counts:</strong></p>
-            <ul>
-                {% for outcome, count in dataset_info.outcome_counts.items %}
-                <li>{{ outcome }}: {{ count }}</li>
-                {% endfor %}
-            </ul>
-        </section>
-
-        <!-- Dataset Analysis Section -->
-        <section id="dataset-analysis">
-            <h2>Dataset Analysis</h2>
-            <h3>Model Performance</h3>
-            <table>
-                <tr>
-                    <th>Model</th>
-                    <th>Accuracy (%)</th>
-                    <th>Precision (%)</th>
-                    <th>Recall (%)</th>
-                </tr>
-                {% for model, metrics in model_results.items %}
-                <tr>
-                    <td>{{ model }}</td>
-                    <td>{{ metrics.accuracy }}</td>
-                    <td>{{ metrics.precision }}</td>
-                    <td>{{ metrics.recall }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-
-            <h3>Score Comparison</h3>
-
-            <div class="photos">
-                <img src="/static/plots/model_accuracy.jpg" alt="Model Accuracy">
-                <img src="/static/plots/diabetes_outcome_count.jpg" alt="Analysis Photo 2">
-            </div>
+        <section id="predict">
+            <h2>Prediction</h2>
+            <form action="/predict/" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {% for i in inputs %}
+                    <div>
+                        <label for="{{i}}"> {{i}}:</label>
+                        <input type="text" name="{{i}}" id="{{i}}" required>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="button">Predict</button>
+            </form>
+            {% if output %}
+            <h1>{{output}}</h1>
+            {% endif %}
         </section>
     </div>
 

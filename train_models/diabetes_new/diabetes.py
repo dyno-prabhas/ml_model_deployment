@@ -83,12 +83,25 @@ for i, v in enumerate(accuracies):
     # Save the plot
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-static_dir = os.path.join(BASE_DIR, 'static', 'plots')
+static_dir = os.path.join(BASE_DIR)
 plot_path = os.path.join(static_dir, 'diabetes_model_accuarcy.jpg')
 plt.savefig(plot_path)
 plt.close()
 
+class_counts = diabetes_data['Outcome'].value_counts()
 
+# Create the bar plot
+plt.figure(figsize=(8, 5))
+plt.bar(class_counts.index, class_counts.values, color=['skyblue', 'salmon'])
+plt.xticks([0, 1], ['Non-Diabetic (0)', 'Diabetic (1)'])
+plt.ylabel('Count')
+plt.xlabel('Classification')
+plt.title('Classification Distribution in the Dataset')
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+
+plot_path = os.path.join(static_dir, 'diabetes_outcome_count.jpg')
+plt.savefig(plot_path)
+plt.close()
 
 # Save dataset and model results
 with open('diabetes_data.pkl', 'wb') as file:
