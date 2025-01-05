@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--wx)+@m6-q#=t)mnxrl&boyfp6_g5cf*@n$pr@lggg%#02w(d0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['prabhas.pythonanywhere.com', '127.0.0.1', 'prabhasvarma.onrender.com']
 
