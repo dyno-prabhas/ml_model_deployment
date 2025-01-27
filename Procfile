@@ -1,1 +1,1 @@
-web: gunicorn ml_models.wsgi:application --preload
+gunicorn ml_models.wsgi:application --preload
